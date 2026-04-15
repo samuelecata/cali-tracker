@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CaliTracker" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>CaliTracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- NAV -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-tab="log">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>Log</span>
+      </button>
+      <button class="nav-btn" data-tab="routine">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span>Routine</span>
+      </button>
+      <button class="nav-btn" data-tab="stats">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Stats</span>
+      </button>
+    </nav>
+
+    <!-- TAB: LOG -->
+    <div class="tab active" id="tab-log">
+      <header>
+        <div class="header-top">
+          <div>
+            <p class="header-date" id="today-date"></p>
+            <h1>Allenamento</h1>
+          </div>
+          <button class="icon-btn" id="add-session-btn">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="content">
+        <div id="session-list"></div>
+        <div id="empty-log" class="empty-state" style="display:none">
+          <div class="empty-icon">◎</div>
+          <p>Nessun allenamento oggi.<br/>Premi + per iniziare.</p>
+        </div>
+      </div>
+
+      <!-- Modal nuova sessione -->
+      <div class="modal" id="session-modal">
+        <div class="modal-backdrop" id="modal-backdrop"></div>
+        <div class="modal-sheet">
+          <div class="modal-handle"></div>
+          <h2>Nuovo Set</h2>
+          <div class="field-group">
+            <label>Esercizio</label>
+            <div class="exercise-grid" id="exercise-picker"></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label>Serie</label>
+              <div class="counter" id="series-counter">
+                <button class="cnt-btn" data-target="series" data-dir="-1">−</button>
+                <span id="series-val">3</span>
+                <button class="cnt-btn" data-target="series" data-dir="1">+</button>
+              </div>
+            </div>
+            <div class="field-group">
+              <label>Reps / Sec</label>
+              <div class="counter" id="reps-counter">
+                <button class="cnt-btn" data-target="reps" data-dir="-1">−</button>
+                <span id="reps-val">8</span>
+                <button class="cnt-btn" data-target="reps" data-dir="1">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Note (opzionale)</label>
+            <input type="text" id="note-input" placeholder="es. forma buona, stanco..." />
+          </div>
+          <button class="primary-btn" id="save-session-btn">Salva</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: ROUTINE -->
+    <div class="tab" id="tab-routine">
+      <header>
+        <div class="header-top">
+          <div>
+            <p class="header-date">Piano V-Shape</p>
+            <h1>Routine</h1>
+          </div>
+        </div>
+      </header>
+      <div class="content">
+        <div class="routine-section">
+          <div class="section-label schiena">A — SCHIENA <span class="badge">Priorità</span></div>
+          <div class="routine-card">
+            <div class="ex-icon">↑</div>
+            <div class="ex-info">
+              <strong>Trazioni</strong>
+              <span>Max reps → riposa 2min → ripeti</span>
+            </div>
+            <div class="ex-sets">?×max</div>
+          </div>
+          <div class="routine-card">
+            <div class="ex-icon">↓</div>
+            <div class="ex-info">
+              <strong>Trazioni Negative</strong>
+              <span>8–10 sec di discesa lenta</span>
+            </div>
+            <div class="ex-sets">4×4</div>
+          </div>
+          <div class="routine-card">
+            <div class="ex-icon">→</div>
+            <div class="ex-info">
+              <strong>Australian Pull-up</strong>
+              <span>Sbarra bassa o tavolo</span>
+            </div>
+            <div class="ex-sets">3×12</div>
+          </div>
+        </div>
+
+        <div class="routine-section">
+          <div class="section-label petto">B — PETTO & BRACCIA</div>
+          <div class="routine-card">
+            <div class="ex-icon">⊕</div>
+            <div class="ex-info">
+              <strong>Parallele (Dip)</strong>
+              <span>Fai PRIMA di push-up</span>
+            </div>
+            <div class="ex-sets">3×max</div>
+          </div>
+          <div class="routine-card">
+            <div class="ex-icon">◇</div>
+            <div class="ex-info">
+              <strong>Diamond Push-up</strong>
+              <span>Mani a diamante, petto centrale</span>
+            </div>
+            <div class="ex-sets">3×max</div>
+          </div>
+        </div>
+
+        <div class="routine-section">
+          <div class="section-label core">C — CORE & BRUCIA GRASSI</div>
+          <div class="routine-card">
+            <div class="ex-icon">◌</div>
+            <div class="ex-info">
+              <strong>Hollow Body Hold</strong>
+              <span>Schiena piatta, gambe+braccia su</span>
+            </div>
+            <div class="ex-sets">3×45s</div>
+          </div>
+          <div class="routine-card">
+            <div class="ex-icon">›</div>
+            <div class="ex-info">
+              <strong>Affondi in Camminata</strong>
+              <span>Brucia grassi post-workout</span>
+            </div>
+            <div class="ex-sets">3×20</div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <div class="tip-icon">⚡</div>
+          <p><strong>Consiglio chiave:</strong> Le trazioni negative ti sbloccheranno. Falle ogni sessione finché non superi 5 trazioni complete.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: STATS -->
+    <div class="tab" id="tab-stats">
+      <header>
+        <div class="header-top">
+          <div>
+            <p class="header-date">Ultimi 30 giorni</p>
+            <h1>Progressi</h1>
+          </div>
+          <button class="icon-btn danger" id="clear-data-btn" title="Reset dati">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="content">
+        <div class="stats-grid" id="stats-grid"></div>
+        <div id="charts-container"></div>
+        <div id="empty-stats" class="empty-state" style="display:none">
+          <div class="empty-icon">◎</div>
+          <p>Nessun dato ancora.<br/>Logga il primo allenamento!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
+  </script>
+</body>
+</html>
